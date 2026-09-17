@@ -13,8 +13,14 @@ function Chat(){
     const [latestreply , setLatestReply] = useState(null);
 
     useEffect(() => {
+
+        if(reply === null){
+            setLatestReply(null);
+            return;
+        }
+
         //latestreply separate => typing effect create
-        if(!prevChat?.length) return;
+        if(!reply) return;
 
         const content =reply.split(" "); //individual words
 
@@ -27,7 +33,7 @@ function Chat(){
         },40);
         return () => clearInterval(interval);
 
-    },[prevChat , reply])
+    },[ reply])
 
     
 
@@ -41,18 +47,36 @@ function Chat(){
                             {
                                 chat.role === "user"?
                                 <p className="usermessage">{chat.content}</p> :
-                                <ReactMarkdown  rehypePlugins={[rehypeHighlight]}>{String (chat.content)} </ReactMarkdown>
+                                <ReactMarkdown  rehypePlugins={[rehypeHighlight]} children={String (chat.content)} />
                             }
                     </div>
                     )
                 }
 
-                {
-                    prevChat.length > 0 && latestreply != null &&
-                    <div className="gptdiv" key={"typing"}> 
-                         <ReactMarkdown  rehypePlugins={[rehypeHighlight]} >{String(latestreply)} </ReactMarkdown>
-                    </div>
-                }
+               { 
+               
+                    prevChat.length > 0 &&  (
+                        <>
+                          {
+                            latestreply === null ? (
+                                <div className="gptdiv" key={"non-typing"}> 
+                                     <ReactMarkdown  rehypePlugins={[rehypeHighlight]} children={String(prevChat[prevChat.length-1].content)} />
+                                 </div>
+                            ) : (
+                                 <div className="gptdiv" key={"typing"}> 
+                                     <ReactMarkdown  rehypePlugins={[rehypeHighlight]} children={String(latestreply)} />
+                                </div>
+                            )
+                          }
+                        </>
+                    )
+               
+               
+               }
+
+
+                
+               
                 
             </div>
         </>

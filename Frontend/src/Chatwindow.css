@@ -92,3 +92,28 @@ input:focus{
     padding: 0.5rem;
     color: #b4b4b4;
 }
+
+
+.dropDown{
+    position: absolute;
+    top: 4rem;
+    right: 4rem;
+    width: 150px;
+    background-color: #323232;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    text-align: left;
+    z-index:1000 ;
+    box-shadow: 0px 2px 8px rgb(0,0,0 ,0.1);
+}
+
+.dropdownitem{
+    font-size: 0.8rem;
+    margin: 0.3rem 0rem;
+    padding: 0.5rem 0.2rem;
+}
+
+.dropdownitem :hover{
+    background-color: rgba(100, 100, 100, 0.1);
+    border-radius: 6px;   
+}

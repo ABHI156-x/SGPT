@@ -4,12 +4,14 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState , useEffect } from "react";
 import {ScaleLoader} from "react-spinners";
 function Chatwindow(){
-    const {prompt , setPrompt , reply , setReply , currThreadId ,setPrevChat, prevChat} = useContext(MyContext);
+    const {prompt , setPrompt , reply , setReply , currThreadId ,setPrevChat, prevChat , setNewChat} = useContext(MyContext);
     const [loading , setLoading] = useState(false);
+    const [isopen , setisOpen] = useState(false); 
 
 
     const getReply = async () => {
         setLoading(true);
+        setNewChat(false);
         const options ={
             method :"POST",
             headers : {
@@ -47,6 +49,10 @@ function Chatwindow(){
         setPrompt("");
     },[reply]);
 
+    const handleprofileclick = () => {
+        setisOpen(!isopen);
+    }
+
 
     return (
         <div className="chatwindow">
@@ -55,12 +61,21 @@ function Chatwindow(){
                     Sigmagpt <i className="fa-solid fa-angle-down"></i>
                     </span>
                     <div className="user">
-                        <span className="usericon">
+                        <span className="usericon" onClick={handleprofileclick}>
                             <i className="fa-solid fa-user"></i>
                         </span>
                     </div>
                 
             </div>
+
+            {
+                isopen && 
+                <div className="dropDown">
+                    <div className="dropdownitem"><i class="fa-solid fa-square-plus"></i>Upgrade Plus</div>
+                    <div className="dropdownitem">Settings</div>
+                    <div className="dropdownitem">LogOut</div>
+                </div>
+            }
 
             <Chat></Chat> 
             <ScaleLoader color="#fff" loading={loading}>
