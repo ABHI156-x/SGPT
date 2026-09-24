@@ -6,9 +6,13 @@ import mongoose from "mongoose";
 const app = express();
 const PORT = 8080;
 import chatRoutes from "./routes/chat.js";
+import authRoutes from "./routes/auth.js"
+
 
 app.use(express.json());
 app.use(cors());
+app.use("/api/auth" , authRoutes);
+
 app.use("/api", chatRoutes);
 
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef,useState   } from "react";
 import "./Chat.css";
 import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
@@ -11,6 +11,7 @@ import "highlight.js/styles/github-dark.css";
 function Chat(){
     const {newChat ,prevChat , reply} = useContext(MyContext);
     const [latestreply , setLatestReply] = useState(null);
+    const bottmRef = useRef(null);
 
     useEffect(() => {
 
@@ -35,11 +36,21 @@ function Chat(){
 
     },[ reply])
 
+    useEffect(() => {
+        bottmRef.current?.scrollIntoView({behaviour : "smooth"});
+    }, [prevChat .latestreply]);
+
     
 
     return (
-        <>
-            {newChat && <h1>Start a New Chat!</h1>}
+        <div className="chat">
+            {newChat &&(
+                <div className="welcome">
+                <h1>Start a New Chat!</h1>
+                <p>Ask anything and start a conversation with Sigmagpt.</p>
+                </div>
+                )}
+
             <div className="chats">
                 {
                     prevChat?.slice(0, -1).map((chat , idx) => 
@@ -73,13 +84,9 @@ function Chat(){
                
                
                }
-
-
-                
-               
-                
+               <div ref={bottmRef}></div>
             </div>
-        </>
+        </div>
     )
 }
 

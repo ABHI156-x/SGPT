@@ -6,11 +6,20 @@ import {v1 as uuidv1} from "uuid";
 
 function Sidebar(){
 
-    const {allThreads , setAllThreads , currThreadId , setNewChat , setPrompt , setCurrThreadId , setPrevChat , setReply} = useContext(MyContext);
+    const {allThreads , setAllThreads , currThreadId , setNewChat , setPrompt , setCurrThreadId , setPrevChat , setReply , handleLogout} = useContext(MyContext);
 
     const getAllThreads = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/thread");
+            const token = localStorage.getItem("token");
+            const response = await fetch("http://localhost:8080/api/thread",{
+                headers:{
+                    "Authorization" :`Bearer ${token}`
+                }
+            });
+            if(response.status === 401){
+                handleLogout();
+                return;
+            }
             const res = await response.json();
             const filterData =res.map(thread => ({threadId : thread.threadId ,title:thread.title}));
             setAllThreads(filterData);
@@ -37,7 +46,16 @@ function Sidebar(){
         setCurrThreadId(newThreadId);
 
         try {
-            const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`,{
+                headers:{
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (response.status === 401) {
+                 handleLogout();
+                  return;
+            }
             const res  = await response.json();
             console.log(res);
             setPrevChat(res);
@@ -50,7 +68,18 @@ function Sidebar(){
 
     const deleteThread = async (threadId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/thread/${threadId}` , {method :"DELETE"});
+            const token = localStorage.getItem("token");     
+            const response = await fetch(`http://localhost:8080/api/thread/${threadId}` , 
+                {
+                    method :"DELETE",
+                    headers:{
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (response.status === 401) {
+                handleLogout();
+                 return;
+                }
             const res = await response.json();
             console.log(res);
 

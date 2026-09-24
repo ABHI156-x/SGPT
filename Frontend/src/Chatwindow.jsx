@@ -4,18 +4,26 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState , useEffect } from "react";
 import {ScaleLoader} from "react-spinners";
 function Chatwindow(){
-    const {prompt , setPrompt , reply , setReply , currThreadId ,setPrevChat, prevChat , setNewChat} = useContext(MyContext);
+    const {prompt , setPrompt , reply , setReply , currThreadId ,setPrevChat, prevChat , setNewChat , handleLogout ,user} = useContext(MyContext);
     const [loading , setLoading] = useState(false);
     const [isopen , setisOpen] = useState(false); 
+    const [error ,setError] = useState("");
 
 
     const getReply = async () => {
+
+        if(!prompt.trim() ||loading){
+            return;
+        }
+
         setLoading(true);
         setNewChat(false);
+        const token = localStorage.getItem("token");
         const options ={
             method :"POST",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "Authorization" : `Bearer ${token}`
             },
             body:JSON.stringify({
                 message :prompt,
@@ -25,13 +33,27 @@ function Chatwindow(){
         try {
            const response = await fetch("http://localhost:8080/api/chat" , options);
            const res = await response.json();
-           console.log(res);
+
+           if(response.status === 401){
+            handleLogout();
+            return;
+           }
+           if(!response.ok){
+            setError(
+                res.message || "Something went wrong . Please try again ."
+            );
+            return;
+           }
+
            setReply(res.reply);
         } catch (error) {
-            console.log(error);
-        }
+            console.log("Chat error :",error);
+
+            setError("Unable to connect to server. Please check your backend");
+        } finally{
         setLoading(false);
-    }
+        }
+    };
 
     //append new chat to prevchats
     useEffect(() => {
@@ -71,16 +93,31 @@ function Chatwindow(){
             {
                 isopen && 
                 <div className="dropDown">
-                    <div className="dropdownitem"><i class="fa-solid fa-square-plus"></i>Upgrade Plus</div>
-                    <div className="dropdownitem">Settings</div>
-                    <div className="dropdownitem">LogOut</div>
+                    <div className="dropdownitem user-info">
+                        <strong>{user?.name}</strong>
+                        <small>{user?.email}</small>
+                    </div>
+                    <div className="dropdownitem"><i className="fa-solid fa-square-plus"></i>Upgrade Plus</div>
+                    
+                    <div className="dropdownitem ">Settings</div>
+
+
+                    <div className="dropdownitem" onClick={handleLogout}>LogOut</div>
                 </div>
             }
 
-            <Chat></Chat> 
-            <ScaleLoader color="#fff" loading={loading}>
+            <Chat></Chat>
+            {error && (
+                <div className="chat-error">
+                    {error}
+                </div>
+            )}
 
-            </ScaleLoader>
+            <div className="chat-loader">
+                    <ScaleLoader color="#fff" loading={loading}></ScaleLoader>
+                </div> 
+
+            
                
             <div className="chatInput">
                 <div className="inputbox">

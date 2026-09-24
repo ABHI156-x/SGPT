@@ -1,32 +1,151 @@
+.chat{
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent; 
+}
+
+.chat::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+}
+
+.welcome{
+    flex: 1;
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.welcome h1{
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #ececec;
+}
+
+.welcome p{
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+
+}
+
 .chats{
-    max-width: 700px;
-    overflow-y: scroll ;
-    padding: 8rem;
+    width: 100%;
+    max-width: 760px;
+    padding: 20px 20px 40px;
+    box-sizing: border-box;
 }
 
 .userdiv{
     display: flex;
     justify-content: flex-end;
-    font-size: 0.9rem;
-}
-
-.gptdiv{
-    text-align: left;
+    width: 100%;
+    margin: 12px 0;
     font-size: 0.9rem;
 }
 
 .usermessage{
-    background-color: #323232;
-    padding: 10px 20px;
-    border-radius: 14px;
+    background: #323232;
+    padding: 10px 15px;
+    border-radius: 16px;
     margin-left: 15rem;
-    max-width: 500px;
-    width: fit-content;
+    max-width: 70%;
+    margin: 0;
+    color: #ececec;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere ;
 }
 
-.hljs{
-    border-radius: 14px !important;
+.gptdiv{
+    width: 100%;
+    margin: 20px 0;
+    color: #ececec;
+    line-height: 1.7;
+
+    text-align: left;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere ;
 }
-pre{
+
+.gptdiv p{
+    margin: 8px 0;
+}
+
+.gptdiv h1,
+.gptdiv h2,
+.gptdiv h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.gptdiv ul,
+.gptdiv ol {
+    padding-left: 25px;
+}
+
+.gptdiv li {
+    margin: 5px 0;
+}
+
+.gptdiv strong {
+    color: #fff;
+}
+
+
+
+.gptdiv pre {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin: 14px 0;
+
+    padding: 14px;
+
+    background: #111;
+
+    border-radius: 10px;
+
+    overflow-x: auto;
+
     white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.gptdiv code {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+
+    font-size: 13px;
+}
+
+
+/* Highlight.js */
+
+.hljs {
+    border-radius: 10px !important;
 }
